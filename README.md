@@ -15,15 +15,11 @@ Follow these steps to set up and run the project locally:
 
 ### 2. Setup the Public Folder
 - Navigate to the `public` folder and run:
-   ```bash
-   npm install
-     ```bash
-   npm start
+   `npm install`
+   `npm start`
 
 ### 3. Setup the Server Folder
 - Navigate to the `server` folder and run:
-   ```bash
-   npm install
-     ```bash
-   npm start run
+   `npm install`
+   `npm start run`
    
