@@ -1,16 +1,16 @@
 // LogoutPage.jsx
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const LogoutPage = () => {
+const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     // Clear any authentication data (if applicable)
-    localStorage.removeItem('authToken');  // Or sessionStorage or any other storage you're using
+    localStorage.removeItem("authToken"); // Or sessionStorage or any other storage you're using
 
     // Redirect to the login page
-    navigate('/login');
+    navigate("/login");
   }, [navigate]);
 
   return (
@@ -21,4 +21,4 @@ const LogoutPage = () => {
   );
 };
 
-export default LogoutPage;
+export default Logout;

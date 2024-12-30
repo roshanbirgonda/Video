@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import Navbar from "./Navbar"; // Import Navbar component
+import { ToastContainer } from "react-toastify";
 import "./App.css";
 
-function App() {
+function Card() {
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies([]);
   const [video, setVideo] = useState(null);
   const [videoURL, setVideoURL] = useState("");
   const [response, setResponse] = useState("");
@@ -16,40 +13,20 @@ function App() {
 
   useEffect(() => {
     const verifyUser = async () => {
-      if (!cookies.jwt) {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
         navigate("/login");
-      } else {
-        const { data } = await axios.post(
-          "http://localhost:4000",
-          {},
-          {
-            withCredentials: true,
-          }
-        );
-        if (!data.status) {
-          removeCookie("jwt");
-          navigate("/login");
-        } else {
-          toast(`Hi ${data.user} 🦄`, {
-            theme: "dark",
-          });
-        }
       }
     };
     verifyUser();
-  }, [cookies, navigate, removeCookie]);
-
-  const logOut = () => {
-    removeCookie("jwt");
-    navigate("/login");
-  };
+  }, [navigate]);
 
   const handleVideoUpload = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("video/")) {
       setVideo(file);
       setVideoURL(URL.createObjectURL(file));
-      setResponse("");
+      setResponse(""); // Clear any previous response
     } else {
       console.error("Please upload a valid video file.");
       setResponse("Invalid file type. Please upload a video.");
@@ -76,7 +53,12 @@ function App() {
         },
       });
       setResponse(res.data.message);
-      setResponseClass(res.data.message === "Video Received" ? "success-message" : "error-message");
+      console.log(res.data);
+      setResponseClass(
+        res.data.message === "Video Received"
+          ? "success-message"
+          : "error-message"
+      );
     } catch (error) {
       console.error("Error sending video to server:", error);
       setResponse("Failed to send video to server.");
@@ -86,13 +68,9 @@ function App() {
 
   return (
     <>
-      <Navbar /> {/* Include Navbar at the top */}
       <div className="App center-container">
         <header className="Prediction">
           <h1>Automatic Cricket Analysis</h1>
-          <button onClick={logOut} className="logout-button">
-            Log Out
-          </button>
           <form onSubmit={handleSubmit}>
             <label className="file-upload">
               <input
@@ -127,4 +105,4 @@ function App() {
   );
 }
 
-export default App;
+export default Card;
